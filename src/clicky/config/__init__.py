@@ -11,6 +11,17 @@ load_dotenv(Path(__file__).parent / f'{os.environ.get("ENV", "local")}.env')
 APP_DIR = Path(clicky.__file__).resolve().parent.parent
 
 
+class ClickhouseSettings(BaseSettings):
+    """
+    Temporary until we save connections in the database.
+    """
+
+    CLICKHOUSE_HOST: str
+    CLICKHOUSE_USER: str
+    CLICKHOUSE_PASSWORD: str
+    CLICKHOUSE_DB: str
+
+
 class Settings(BaseSettings):
     ROOT_PATH: str = ""
     SERVER_PORT: int = 8080
@@ -32,3 +43,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()  # type: ignore[call-arg]
+clickhouse_settings = ClickhouseSettings()  # type: ignore[call-arg]

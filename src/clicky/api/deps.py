@@ -7,7 +7,7 @@ from fastapi import Depends
 from openai import AsyncOpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from clicky.config import settings
+from clicky.config import clickhouse_settings, settings
 from clicky.db import engine
 from clicky.entities import User, UserSession
 from clicky.services import Clickhouse, OpenAIService, SessionService
@@ -48,12 +48,11 @@ SessionService_T = Annotated[SessionService, Depends(_new_session_service)]
 
 
 async def _new_clickhouse_service() -> Clickhouse:
-    # TODO
     connection = await clickhouse_connect.get_async_client(
-        host="",
-        user="",
-        password="",
-        database="",
+        host=clickhouse_settings.CLICKHOUSE_HOST,
+        user=clickhouse_settings.CLICKHOUSE_USER,
+        password=clickhouse_settings.CLICKHOUSE_PASSWORD,
+        database=clickhouse_settings.CLICKHOUSE_DB,
     )
     return Clickhouse(connection)
 
