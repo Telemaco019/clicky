@@ -1,0 +1,17 @@
+<div class="query-history-item">
+  <div
+    class="flex justify-between space-x-2 overflow-hidden text-sm text-gray-400"
+  >
+    {% if props.error %}
+      <span class="text-red-500">Error</span>
+      <span class="truncate">{{ props.error }}</span>
+    {% else %}
+      <span class="text-green-500">Success</span>
+      <span
+        >Execution time:
+        {{ props.content.query_result.stats.execution_time_humanized }}</span
+      >
+    {% endif %}
+  </div>
+  <div class="mt-2 truncate">{{ props.content.query }}</div>
+</div>

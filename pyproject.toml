@@ -1,0 +1,115 @@
+[project]
+name = "clicky"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "~=3.12"
+dependencies = [
+    "aiosqlite>=0.20.0",
+    "alembic>=1.14.0",
+    "clickhouse-connect>=0.8.11",
+    "colorlog>=6.9.0",
+    "fastapi>=0.115.6",
+    "greenlet>=3.1.1",
+    "humanize>=4.11.0",
+    "jinja2>=3.1.5",
+    "load-dotenv>=0.1.0",
+    "openai>=1.59.7",
+    "pydantic>=2.10.4",
+    "pydantic-settings>=2.7.0",
+    "pytailwindcss>=0.2.0",
+    "python-json-logger>=3.2.1",
+    "python-multipart>=0.0.20",
+    "sqlalchemy>=2.0.36",
+    "sqlfluff>=3.3.0",
+    "sse-starlette>=2.2.1",
+    "uvicorn>=0.34.0",
+]
+
+[project.scripts]
+my = "app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[dependency-groups]
+dev = [
+    "black>=24.10.0",
+    "mypy>=1.14.0",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.0",
+    "pytest-coverage>=0.0",
+    "ruff>=0.8.4",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+]
+minversion = "7.0"
+testpaths = [
+    "tests",
+]
+asyncio_mode = "auto"
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "clients",
+]
+
+# Same as Black.
+line-length = 88
+
+# Assume Python 3.11.
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "C90", "ASYNC", "T20", "PL", "SIM", "PIE", "NPY"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.html]
+show_contexts = true
+
+[tool.uv.workspace]
+members = ["test", "test/my"]

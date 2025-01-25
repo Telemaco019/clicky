@@ -1,0 +1,21 @@
+{% block query_history %}
+  <!-- Ensure sidebar has a fixed width and doesn't shrink when table is wide -->
+  <div class="h-full overflow-auto rounded border border-gray-200 p-4 shadow">
+    <h2 class="p-4 text-lg font-semibold">Query History</h2>
+    <div class="overflow-y-auto overflow-x-hidden">
+      <div>
+        <ul id="query-history-list" class="divide-y divide-gray-200">
+          {% for history_item in props.query_history %}
+            <li class="query-history-item">
+              <div class="text-sm font-medium text-gray-900">#1</div>
+              <div class="truncate text-sm text-gray-500">
+                SELECT * FROM users
+              </div>
+              <div class="mt-1 text-xs text-gray-400">50ms</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

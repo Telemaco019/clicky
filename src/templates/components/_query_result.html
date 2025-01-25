@@ -1,0 +1,58 @@
+{% block query_result %}
+  {% if not props.error %}
+    <input id="query-id" class="hidden" value="{{ props.content.query_id }}" />
+    <div
+      id="query-stats"
+      class="mb-2 flex flex-row items-center space-x-6 text-sm text-gray-700"
+    >
+      <div>
+        Fetched rows: {{ props.content.query_result.stats.fetched_rows }}
+      </div>
+      <div>
+        Processed rows:
+        {{ props.content.query_result.stats.processed_rows_humanized }}
+        ({{ props.content.query_result.stats.processed_bytes_humanized }})
+      </div>
+      <div>
+        Execution time:
+        {{ props.content.query_result.stats.execution_time_humanized }}
+      </div>
+      <div>
+        Throughput:
+        {{ props.content.query_result.stats.throughput_humanized }}/s
+      </div>
+    </div>
+
+    <div
+      id="query-output"
+      class="w-full overflow-x-auto pt-2 shadow-md sm:rounded-lg"
+    >
+      <!-- Use 'min-w-full' to ensure columns don't get squashed -->
+      <table class="w-full text-left text-sm text-gray-500">
+        <thead class="bg-gray-200 text-xs uppercase text-gray-700">
+          <tr>
+            {% for column in props.content.query_result.output.columns %}
+              <th scope="col" class="resizable px-6 py-3">{{ column }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in props.content.query_result.output.rows %}
+            <tr
+              class="max-g-16 overflow-hidden border-b odd:bg-white even:bg-gray-50 hover:bg-blue-50"
+            >
+              {% for cell in row %}
+                <td class="truncate px-6 py-4">{{ cell }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="bg-red-100 p-4">
+      <h3 class="font-mono text-lg font-bold text-red-500">Error</h3>
+      {{ props.error }}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.12.1-alpine
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+    environment:
+      - CLICKHOUSE_USER=admin
+      - CLICKHOUSE_DB=app
+      - CLICKHOUSE_PASSWORD=changethis

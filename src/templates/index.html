@@ -1,0 +1,82 @@
+{% extends "/shared/_base.html" %}
+{% block content %}
+  <div id="sidebar-placeholder" class="px-20"></div>
+
+  <!-- Main container: fill full viewport height, create horizontal space. -->
+  <div
+    class="flex min-h-screen w-full min-w-0 space-x-8"
+    x-data="{ query: '', isLoading: false }"
+    x-init="
+      const loadingPaths = ['/queries/run', '/queries/optimize'];
+
+      document.addEventListener('htmx:beforeRequest', (event) => {
+        if (loadingPaths.includes(event.detail.requestConfig.path)) {
+          isLoading = true;
+        }
+      });
+      document.addEventListener('htmx:afterRequest', (event) => {
+        if (loadingPaths.includes(event.detail.requestConfig.path)) {
+          isLoading = false;
+        }
+      });
+    "
+  >
+    <!-- Left side: form + results -->
+    <!-- NOTE the addition of `min-w-0` here -->
+    <div class="flex min-w-0 flex-1 flex-col space-y-4">
+      <!-- Form Section -->
+      <div>
+        <form id="query-form" class="flex flex-col space-y-4" x-model="query">
+          <div id="query-editor" class="mt-8">
+            {% include '/components/_query_input.html' %}
+          </div>
+
+          <button
+            type="submit"
+            hx-disabled-elt="this"
+            class="w-full rounded-md bg-blue-500 p-2 text-white disabled:bg-blue-300"
+            hx-post="/queries/run"
+            :disabled="isLoading || query.trim() === ''"
+            hx-swap="innerHTML"
+            hx-indicator="#spinner"
+            hx-target="#result"
+          >
+            Run Query
+          </button>
+          <button
+            hx-target="#query-editor"
+            hx-post="/queries/format"
+            hx-swap="innerHTML"
+            class="w-full rounded-md border p-2 active:bg-gray-100 disabled:bg-gray-200 disabled:text-white"
+            :disabled="isLoading || query.trim() === ''"
+          >
+            Beautify
+          </button>
+        </form>
+      </div>
+
+      <!-- Results Section -->
+      <div id="results-section" class="flex-1">
+        <div
+          id="spinner"
+          x-show="isLoading"
+          role="status"
+          class="mt-12 flex justify-center"
+        >
+          {% include '/icons/_spinner.html' %}
+        </div>
+
+        <div
+          id="result"
+          class="flex w-full flex-col overflow-y-auto"
+          x-show="!isLoading"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Right side: Query history sidebar -->
+    <div class="mr-4 w-1/4 flex-shrink-0">
+      {% include "/components/_query_history.html" %}
+    </div>
+  </div>
+{% endblock %}
